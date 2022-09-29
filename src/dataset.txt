@@ -1,6 +1,6 @@
 id	name	surname	phonenumber
 1	Vazili	Miritsa	123456798
 2	Kostas	Chatzi	654987321
-3	Evaggelia	Tsiou	369852147
+3	Evan	Tsiou	369852147
 4	Tonia	Skarle	456798123
 5	Manos	Anagnost	956874123
