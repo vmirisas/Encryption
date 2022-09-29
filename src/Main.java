@@ -28,27 +28,27 @@ public class Main {
                 for(String dataValue : dataValuesString){
                     dataValues.add(dataValue);
                 }
-            }
+            }scanner.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         int rows = dataValues.size() / dataFields.size();
+        System.out.println(rows);
         int columns = dataFields.size();
+        System.out.println(columns);
         int counter = 0;
 
-        String[][] dataValuesMatrix = new String[columns][rows];
+        String[][] dataValuesMatrix = new String[rows][columns];
 
-        for(int i = 0; i < columns; i++){
-            for (int j = 0; j < rows; j++){
+        for(int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++){
                 dataValuesMatrix[i][j] = dataValues.get(counter);
                 counter++;
             }
         }
 
-
         System.out.println("Choose the configuration file");
-//        String configureFileLocation = scanner.nextLine();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String configureFileLocation = null;
         try {
@@ -74,39 +74,73 @@ public class Main {
         System.out.println(sameFieldIndexArray);
 
         //encrypt the data
-//        String[][] dataEncryptedValuesMatrix = new String[columns][rows];
+        String[][] dataEncryptedValuesMatrix = new String[rows][columns];
         final String secretKey = "1234567891234567";
-//        int counter2 = 0;
-//        for(int i = 0; i < columns; i++){
-//            for (int j = 0; j < rows; j++){
-//                if(sameFieldIndexArray.get(counter2) == i){
-//                    dataEncryptedValuesMatrix[i][j] =  AESEncryptor.encrypt(dataValuesMatrix[i][j], secretKey) ;
-//                } else {
-//                    dataEncryptedValuesMatrix[i][j] = dataValuesMatrix[i][j];
+
+        for(int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++){
+                for (int k = 0; k < configuredFields.size(); k++){
+                    if(sameFieldIndexArray.get(k) == j){
+                        dataEncryptedValuesMatrix[i][j] =  AESEncryptor.encrypt(dataValuesMatrix[i][j], secretKey) ;
+                    } else {
+                        dataEncryptedValuesMatrix[i][j] = dataValuesMatrix[i][j];
+                    }
+                }
+            }
+        }
+
+
+
+//        for(int i = 0; i < rows; i++){
+//            for (int j = 0; j < columns; j++){
+//                for (int k = 0; k < sameFieldIndexArray.size(); k++){
+//                    Integer checkfield = Integer.parseInt(configuredFields.get(k));
+//                    if(checkfield == j){
+//                        dataEncryptedValuesMatrix[i][j] =  AESEncryptor.encrypt(dataValuesMatrix[i][j], secretKey) ;
+//                    } else {
+//                        dataEncryptedValuesMatrix[i][j] = dataValuesMatrix[i][j];
+//                    }
 //                }
-//                counter2++;
 //            }
 //        }
-
-        String smth = "Vasilis";
-        //String enc = AESEncryptor.encrypt(smth,secretKey);
-        //System.out.println(enc);
 
         //Write the encrypted values to a .txt file
         try (BufferedWriter cypheredFile = new BufferedWriter(new FileWriter("cyphered.txt")))
         {
             cypheredFile.write("ID" + "\t" + "NAME" + "\t" + "SURNAME" + "\t" + "PHONE_NUMBER"+ "\n");
-            for (int i = 0; i < dataValues.size()/ dataFields.size(); i++){
-                //cypheredFile.write(idColumn.get("id") + "\t" + Arrays.toString(nameColumn.get(i)) + "\t" + Arrays.toString(surnameColumn.get(i)) + "\t" + Arrays.toString(phoneNumberColumn.get(i)) + "\n");
+            for (int i = 0; i < rows; i++){
+                String encryptedRow;
+                for (int j = 0; j < columns; j++) {
+                    if (j < columns - 1) {
+                        encryptedRow = dataEncryptedValuesMatrix[i][j] + "\t";
+                    } else {
+                        encryptedRow = dataEncryptedValuesMatrix[i][j] + "\n";
+                    }
+                    cypheredFile.write(encryptedRow);
+                }
             }
+
+//            for (int i = 0; i < rows; i++){
+//                String encryptedRow = dataEncryptedValuesMatrix[i][0] + "\t" + dataEncryptedValuesMatrix[i][1] + "\t" + dataEncryptedValuesMatrix[i][2] + "\t" + dataEncryptedValuesMatrix[i][3] + "\n";
+//
+//                cypheredFile.write(encryptedRow);
+//
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
-        for(int i = 0; i < columns; i++){
-            for (int j = 0; j <rows; j++){
+        System.out.println("\n ============== Plain data ============= ");
+        for(int i = 0; i < rows; i++){
+            for (int j = 0; j <columns; j++){
                 System.out.println("arr[" + i + "][" + j + "] = "+ dataValuesMatrix[i][j]);
+            }
+        }
+
+        System.out.println("\n ============== Encrypted data ============= ");
+        for(int i = 0; i < rows; i++){
+            for (int j = 0; j <columns; j++){
+                System.out.println("arr[" + i + "][" + j + "] = "+ dataEncryptedValuesMatrix[i][j]);
             }
         }
     }
