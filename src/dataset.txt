@@ -3,4 +3,4 @@ id	name	surname	phonenumber
 2	Kostas	Chatzi	654987321
 3	Evan	Tsiou	369852147
 4	Tonia	Skarle	456798123
-5	Manos	Anagnost	956874123
+5	Manos	Anagnos	956874123
