@@ -79,18 +79,14 @@ public class Main {
 
         for(int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
-                for (int k = 0; k < configuredFields.size(); k++){
-//                    if(sameFieldIndexArray.get(k) == j){
-//                        dataEncryptedValuesMatrix[i][j] =  AESEncryptor.encrypt(dataValuesMatrix[i][j], secretKey) ;
-//                    } else {
-//                        dataEncryptedValuesMatrix[i][j] = dataValuesMatrix[i][j];
-//                    }
-
-                    if(1 == j || 3 == j){
+                for (int k = 0; k < sameFieldIndexArray.size(); k++){
+                    if(sameFieldIndexArray.get(k) == j){
                         dataEncryptedValuesMatrix[i][j] =  AESEncryptor.encrypt(dataValuesMatrix[i][j], secretKey) ;
+                        break;
                     } else {
                         dataEncryptedValuesMatrix[i][j] = dataValuesMatrix[i][j];
                     }
+
                 }
             }
         }
